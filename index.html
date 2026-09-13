@@ -35,37 +35,46 @@
   /* ===== صفحه شروع ===== */
   .start-wrap{
     flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:22px; padding:20px; position:relative; overflow:hidden;
-    background:radial-gradient(ellipse at 50% 15%, #123a2c 0%, #05130e 75%);
+    gap:20px; padding:34px 20px; position:relative; overflow:hidden;
+    background:
+      radial-gradient(ellipse at 50% 8%, rgba(122,35,49,0.18), transparent 42%),
+      radial-gradient(ellipse at 50% 15%, #123a2c 0%, #05130e 75%);
   }
   .start-pattern{
-    position:absolute; inset:0; opacity:0.15; pointer-events:none;
-    background-image:
-      linear-gradient(45deg, transparent 48%, #d4af37 49%, #d4af37 51%, transparent 52%),
-      linear-gradient(-45deg, transparent 48%, #d4af37 49%, #d4af37 51%, transparent 52%);
-    background-size: 46px 46px;
+    position:absolute; inset:0; opacity:0.16; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cg fill='none' stroke='%23d4af37' stroke-width='1'%3E%3Cpath d='M30 4 L36 20 L52 14 L40 26 L56 30 L40 34 L52 46 L36 40 L30 56 L24 40 L8 46 L20 34 L4 30 L20 26 L8 14 L24 20 Z'/%3E%3C/g%3E%3Ccircle cx='30' cy='30' r='2.6' fill='%232d9666' opacity='0.7'/%3E%3C/svg%3E");
+    background-size:60px 60px;
   }
-  .start-arch{ position:relative; z-index:1; width:120px; }
+  .start-guard{
+    position:absolute; left:0; right:0; height:11px; z-index:1;
+    background:repeating-linear-gradient(90deg, #d4af37 0 11px, #f5ecd0 11px 22px, #7a2331 22px 33px, #f5ecd0 33px 44px);
+    opacity:.9;
+  }
+  .start-guard.top{ top:0; }
+  .start-guard.bottom{ bottom:0; }
+  .start-arch{ position:relative; z-index:1; width:126px; margin-top:6px; }
   .dome-svg{ width:100%; overflow:visible; }
-  .start-wrap h1{ position:relative; z-index:1; font-family:'Amiri', serif; font-size:1.55rem; font-weight:700; color:#efe8d5; margin:0; text-align:center; }
+  .start-wrap h1{ position:relative; z-index:1; font-family:'Amiri', serif; font-size:1.6rem; font-weight:700; color:#efe8d5; margin:0; text-align:center; letter-spacing:.3px; }
   .start-divider{ position:relative; z-index:1; display:flex; align-items:center; gap:10px; color:#d4af37; }
-  .start-divider span{ width:44px; height:1px; background:#d4af37; opacity:0.55; }
-  .start-divider i{ font-style:normal; font-size:0.85rem; }
+  .start-divider span{ width:44px; height:1px; background:linear-gradient(90deg, transparent, #d4af37); opacity:0.6; }
+  .start-divider span.rev{ background:linear-gradient(270deg, transparent, #d4af37); }
+  .start-divider i{ font-style:normal; font-size:0.9rem; color:#7a2331; }
   .start-wrap p{ position:relative; z-index:1; font-size:.85rem; color:#9fbbaa; text-align:center; margin:0; max-width:26ch; line-height:1.9; }
-  .start-wrap button{ position:relative; z-index:1; }
-  .start-corner{ position:absolute; width:60px; height:60px; border:1.5px solid rgba(212,175,55,0.45); z-index:1; }
-  .start-corner.tl{ top:22px; left:22px; border-left:none; border-bottom:none; border-top-right-radius:0; border-top-left-radius:16px; }
-  .start-corner.tr{ top:22px; right:22px; border-right:none; border-bottom:none; border-top-right-radius:16px; }
-  .start-corner.bl{ bottom:22px; left:22px; border-left:none; border-top:none; border-bottom-left-radius:16px; }
-  .start-corner.br{ bottom:22px; right:22px; border-right:none; border-top:none; border-bottom-right-radius:16px; }
+  .start-wrap button{ position:relative; z-index:1; margin-top:4px; }
+  .start-corner{ position:absolute; width:54px; height:54px; border:1.5px solid rgba(212,175,55,0.5); z-index:1; }
+  .start-corner.tl{ top:26px; left:26px; border-left:none; border-bottom:none; border-top-right-radius:0; border-top-left-radius:16px; }
+  .start-corner.tr{ top:26px; right:26px; border-right:none; border-bottom:none; border-top-right-radius:16px; }
+  .start-corner.bl{ bottom:26px; left:26px; border-left:none; border-top:none; border-bottom-left-radius:16px; }
+  .start-corner.br{ bottom:26px; right:26px; border-right:none; border-top:none; border-bottom-right-radius:16px; }
+  .start-corner::after{ content:''; position:absolute; width:5px; height:5px; border-radius:50%; background:#d4af37; }
+  .start-corner.tl::after{ top:-2.5px; left:-2.5px; }
+  .start-corner.tr::after{ top:-2.5px; right:-2.5px; }
+  .start-corner.bl::after{ bottom:-2.5px; left:-2.5px; }
+  .start-corner.br::after{ bottom:-2.5px; right:-2.5px; }
 
   /* ===== صفحات مبتنی بر عکس (ورود / زیارت) ===== */
   .image-page{ position:relative; flex:1; width:100%; height:100%; overflow:hidden; background:#05130e; display:flex; align-items:center; justify-content:center; }
   .full-image{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; background:#05130e; }
-  .image-overlay-btn{
-    position:absolute; right:50%; transform:translateX(50%);
-    z-index:2; padding:13px 54px; font-size:1rem;
-  }
   .image-sound-toggle{
     position:absolute; bottom:16px; right:50%; transform:translateX(50%);
     z-index:2; background:rgba(6,20,15,.55); padding:6px 16px; border-radius:20px;
@@ -245,19 +254,28 @@
   <section class="page active" id="page-start">
     <div class="start-wrap">
       <div class="start-pattern"></div>
+      <div class="start-guard top"></div>
+      <div class="start-guard bottom"></div>
       <div class="start-arch">
-        <svg viewBox="0 0 120 150" class="dome-svg">
-          <path d="M60 4 C90 4 104 34 104 62 L104 100 L16 100 L16 62 C16 34 30 4 60 4 Z" fill="none" stroke="#d4af37" stroke-width="2.2"/>
-          <path d="M60 20 C82 20 92 42 92 62 L92 88 L28 88 L28 62 C28 42 38 20 60 20 Z" fill="none" stroke="#d4af37" stroke-width="1.2" opacity="0.6"/>
-          <line x1="60" y1="4" x2="60" y2="-14" stroke="#d4af37" stroke-width="2"/>
-          <circle cx="60" cy="-18" r="4" fill="#d4af37"/>
-          <line x1="16" y1="100" x2="16" y2="140" stroke="#d4af37" stroke-width="2"/>
-          <line x1="104" y1="100" x2="104" y2="140" stroke="#d4af37" stroke-width="2"/>
-          <line x1="10" y1="140" x2="110" y2="140" stroke="#d4af37" stroke-width="2"/>
+        <svg viewBox="0 0 120 172" class="dome-svg">
+          <line x1="60" y1="26" x2="60" y2="8" stroke="#d4af37" stroke-width="2"/>
+          <circle cx="60" cy="6" r="3.5" fill="#d4af37"/>
+          <path d="M60 26 C92 26 108 58 108 88 L108 122 L12 122 L12 88 C12 58 28 26 60 26 Z" fill="none" stroke="#d4af37" stroke-width="2.2"/>
+          <path d="M60 40 C82 40 94 62 94 88 L94 110 L26 110 L26 88 C26 62 38 40 60 40 Z" fill="none" stroke="#d4af37" stroke-width="1.1" opacity="0.55"/>
+          <g stroke="#2d9666" stroke-width="1" fill="none" opacity="0.85">
+            <circle cx="60" cy="62" r="11"/>
+            <path d="M60 51 L60 73 M49 62 L71 62 M52.5 54.5 L67.5 69.5 M67.5 54.5 L52.5 69.5"/>
+          </g>
+          <circle cx="60" cy="62" r="3" fill="#7a2331"/>
+          <line x1="12" y1="122" x2="12" y2="160" stroke="#d4af37" stroke-width="2"/>
+          <line x1="108" y1="122" x2="108" y2="160" stroke="#d4af37" stroke-width="2"/>
+          <line x1="6" y1="160" x2="114" y2="160" stroke="#d4af37" stroke-width="2"/>
+          <circle cx="12" cy="160" r="2.4" fill="#d4af37"/>
+          <circle cx="108" cy="160" r="2.4" fill="#d4af37"/>
         </svg>
       </div>
       <h1>آستان سید مرتضی (ع)</h1>
-      <div class="start-divider"><span></span><i>✦</i><span></span></div>
+      <div class="start-divider"><span></span><i>❈</i><span class="rev"></span></div>
       <p>همراه شما در ادعیه، زیارات و عبادات روزانه</p>
       <button id="startBtn">شروع</button>
       <div class="start-corner tl"></div>
@@ -270,11 +288,11 @@
   <!-- صفحه ورود -->
   <section class="page" id="page-login">
     <div class="image-page">
-      <img src="login.jpg" alt="خوش آمدید" class="full-image" id="loginImg" onerror="this.style.display='none'; document.getElementById('loginImgErr').style.display='block';">
+      <img src="login.jpg" alt="ورود" class="full-image" id="loginImg" style="cursor:pointer;" onerror="this.style.display='none'; document.getElementById('loginImgErr').style.display='block';">
       <div class="img-error" id="loginImgErr">
-        عکس <b>login.jpg</b> پیدا نشد. مطمئن شوید این فایل دقیقاً با همین اسم (حروف کوچک) کنار index.html در ریشه‌ی ریپازیتوری آپلود شده باشد.
+        عکس <b>login.jpg</b> پیدا نشد. مطمئن شوید این فایل دقیقاً با همین اسم (حروف کوچک) کنار index.html در ریشه‌ی ریپازیتوری آپلود شده باشد.<br>
+        <span id="loginFallbackBtn" style="display:inline-block;margin-top:14px;text-decoration:underline;cursor:pointer;color:#d4af37;">ورود به زیارت‌نامه</span>
       </div>
-      <button id="enterBtn" class="image-overlay-btn" style="top:76.5%;">ورود</button>
       <div class="sound-toggle image-sound-toggle" id="soundToggle">
         <span class="dot"></span>
         <span id="soundLabel">صدا: روشن</span>
@@ -435,9 +453,9 @@ document.getElementById('soundToggle').addEventListener('click', function(){
   if(soundOn) audioEl.play().catch(function(){}); else audioEl.pause();
 });
 
-document.getElementById('enterBtn').addEventListener('click', function(){
-  showPage('page-ziyarat');
-});
+function goToZiyarat(){ showPage('page-ziyarat'); }
+document.getElementById('loginImg').addEventListener('click', goToZiyarat);
+document.getElementById('loginFallbackBtn').addEventListener('click', goToZiyarat);
 
 /* ================== زیارت ================== */
 const scrollEl = document.getElementById('ziyaratScroll');
