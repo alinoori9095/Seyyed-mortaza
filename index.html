@@ -35,12 +35,46 @@
   /* ===== صفحه شروع ===== */
   .start-wrap{
     flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:26px; padding:20px;
-    background:radial-gradient(ellipse at 50% 20%, #103c2c 0%, #061a14 70%);
+    gap:22px; padding:20px; position:relative; overflow:hidden;
+    background:radial-gradient(ellipse at 50% 15%, #123a2c 0%, #05130e 75%);
   }
-  .start-emblem{ font-size:3rem; }
-  .start-wrap h1{ font-size:1.5rem; font-weight:600; color:#efe8d5; margin:0; text-align:center; }
-  .start-wrap p{ font-size:.85rem; color:#9fbbaa; text-align:center; margin:0; max-width:26ch; line-height:1.9;}
+  .start-pattern{
+    position:absolute; inset:0; opacity:0.15; pointer-events:none;
+    background-image:
+      linear-gradient(45deg, transparent 48%, #d4af37 49%, #d4af37 51%, transparent 52%),
+      linear-gradient(-45deg, transparent 48%, #d4af37 49%, #d4af37 51%, transparent 52%);
+    background-size: 46px 46px;
+  }
+  .start-arch{ position:relative; z-index:1; width:120px; }
+  .dome-svg{ width:100%; overflow:visible; }
+  .start-wrap h1{ position:relative; z-index:1; font-family:'Amiri', serif; font-size:1.55rem; font-weight:700; color:#efe8d5; margin:0; text-align:center; }
+  .start-divider{ position:relative; z-index:1; display:flex; align-items:center; gap:10px; color:#d4af37; }
+  .start-divider span{ width:44px; height:1px; background:#d4af37; opacity:0.55; }
+  .start-divider i{ font-style:normal; font-size:0.85rem; }
+  .start-wrap p{ position:relative; z-index:1; font-size:.85rem; color:#9fbbaa; text-align:center; margin:0; max-width:26ch; line-height:1.9; }
+  .start-wrap button{ position:relative; z-index:1; }
+  .start-corner{ position:absolute; width:60px; height:60px; border:1.5px solid rgba(212,175,55,0.45); z-index:1; }
+  .start-corner.tl{ top:22px; left:22px; border-left:none; border-bottom:none; border-top-right-radius:0; border-top-left-radius:16px; }
+  .start-corner.tr{ top:22px; right:22px; border-right:none; border-bottom:none; border-top-right-radius:16px; }
+  .start-corner.bl{ bottom:22px; left:22px; border-left:none; border-top:none; border-bottom-left-radius:16px; }
+  .start-corner.br{ bottom:22px; right:22px; border-right:none; border-top:none; border-bottom-right-radius:16px; }
+
+  /* ===== صفحات مبتنی بر عکس (ورود / زیارت) ===== */
+  .image-page{ position:relative; flex:1; width:100%; height:100%; overflow:hidden; background:#05130e; display:flex; align-items:center; justify-content:center; }
+  .full-image{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:block; background:#05130e; }
+  .image-overlay-btn{
+    position:absolute; right:50%; transform:translateX(50%);
+    z-index:2; padding:13px 54px; font-size:1rem;
+  }
+  .image-sound-toggle{
+    position:absolute; bottom:16px; right:50%; transform:translateX(50%);
+    z-index:2; background:rgba(6,20,15,.55); padding:6px 16px; border-radius:20px;
+  }
+  .ziyarat-image{ width:100%; display:block; border-radius:18px; }
+  .img-error{
+    position:relative; z-index:2; text-align:center; padding:20px;
+    font-size:.8rem; color:#e0a55c; line-height:1.9; max-width:28ch; display:none;
+  }
 
   /* ===== صفحه ورود (login) ===== */
   .login-wrap{
@@ -107,7 +141,11 @@
                linear-gradient(160deg, rgba(45,150,102,.3), rgba(8,30,22,.5));
     border:1px solid rgba(64,196,138,.4);
   }
-  .home-hero .em{ font-size:1.8rem; margin-bottom:6px; }
+  .home-hero .hero-arch{
+    width:34px; height:34px; margin:0 auto 8px;
+    border:1.5px solid #d4af37; border-radius:50% 50% 0 0;
+    border-bottom:none; opacity:0.85;
+  }
   .home-hero h1{ font-family:'Amiri', serif; font-size:1.3rem; margin:0 0 4px; color:#f0e0a0; }
   .home-hero p{ font-size:.72rem; color:#9fbbaa; margin:0; }
 
@@ -206,58 +244,50 @@
   <!-- صفحه شروع -->
   <section class="page active" id="page-start">
     <div class="start-wrap">
-      <div class="start-emblem">☪️</div>
+      <div class="start-pattern"></div>
+      <div class="start-arch">
+        <svg viewBox="0 0 120 150" class="dome-svg">
+          <path d="M60 4 C90 4 104 34 104 62 L104 100 L16 100 L16 62 C16 34 30 4 60 4 Z" fill="none" stroke="#d4af37" stroke-width="2.2"/>
+          <path d="M60 20 C82 20 92 42 92 62 L92 88 L28 88 L28 62 C28 42 38 20 60 20 Z" fill="none" stroke="#d4af37" stroke-width="1.2" opacity="0.6"/>
+          <line x1="60" y1="4" x2="60" y2="-14" stroke="#d4af37" stroke-width="2"/>
+          <circle cx="60" cy="-18" r="4" fill="#d4af37"/>
+          <line x1="16" y1="100" x2="16" y2="140" stroke="#d4af37" stroke-width="2"/>
+          <line x1="104" y1="100" x2="104" y2="140" stroke="#d4af37" stroke-width="2"/>
+          <line x1="10" y1="140" x2="110" y2="140" stroke="#d4af37" stroke-width="2"/>
+        </svg>
+      </div>
       <h1>آستان سید مرتضی (ع)</h1>
+      <div class="start-divider"><span></span><i>✦</i><span></span></div>
       <p>همراه شما در ادعیه، زیارات و عبادات روزانه</p>
       <button id="startBtn">شروع</button>
+      <div class="start-corner tl"></div>
+      <div class="start-corner tr"></div>
+      <div class="start-corner bl"></div>
+      <div class="start-corner br"></div>
     </div>
   </section>
 
   <!-- صفحه ورود -->
   <section class="page" id="page-login">
-    <div class="login-wrap">
-      <div class="box">
-        <h2>بسم الله<br>الرحمن الرحیم</h2>
-        <p>به آستان مقدس<br>سید مرتضی (ع)<br>خوش آمدید</p>
-        <div class="divider">✦</div>
-        <button id="enterBtn">ورود</button>
-        <div class="sound-toggle" id="soundToggle">
-          <span class="dot"></span>
-          <span id="soundLabel">صدای پس‌زمینه: روشن</span>
-        </div>
+    <div class="image-page">
+      <img src="login.jpg" alt="خوش آمدید" class="full-image" id="loginImg" onerror="this.style.display='none'; document.getElementById('loginImgErr').style.display='block';">
+      <div class="img-error" id="loginImgErr">
+        عکس <b>login.jpg</b> پیدا نشد. مطمئن شوید این فایل دقیقاً با همین اسم (حروف کوچک) کنار index.html در ریشه‌ی ریپازیتوری آپلود شده باشد.
+      </div>
+      <button id="enterBtn" class="image-overlay-btn" style="top:76.5%;">ورود</button>
+      <div class="sound-toggle image-sound-toggle" id="soundToggle">
+        <span class="dot"></span>
+        <span id="soundLabel">صدا: روشن</span>
       </div>
     </div>
   </section>
 
   <!-- صفحه زیارت -->
   <section class="page" id="page-ziyarat">
-    <div class="ziyarat-header">
-      <div class="bism">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
-      <div class="ornament">✦ ❁ ✦</div>
-    </div>
     <div class="ziyarat-scroll" id="ziyaratScroll">
-      <div class="ziyarat-card">
-        <div class="ziyarat-text">
-          <span class="line">السَّلَامُ عَلَيْكَ يَا السَّيِّدَ الرَّكِيَّ الطَّاهِرَ التَّقِيَّ وَالدَّاعِيَ الْحَفِيَّ</span>
-          <span class="sep">❁</span>
-          <span class="line">أَشْهَدُ أَنَّكَ قُلْتَ حَقًّا وَصَدَقْتَا وَدَعَوْتَ إِلَى مَوْلَايَ وَمَوْلَاكَ عَلَانِيَةً وَسِرًّا</span>
-          <span class="sep">❁</span>
-          <span class="line">فَازَ مُتَّبِعُكَ وَنَجَا مُصَدِّقُكَ وَخَابَ وَخَسِرَ مُكَذِّبُكَ وَالْمُتَخَلِّفُ عَنْكَ</span>
-          <span class="sep">❁</span>
-          <span class="line">أَشْهَدُ لِي بِهَذِهِ الشَّهَادَةِ لِأَكُونَ مِنَ الْفَائِزِينَ بِمَعْرِفَتِكَ</span>
-          <span class="line">وَطَاعَتِكَ وَتَصْدِيقِكَ وَاتِّبَاعِكَ</span>
-          <span class="sep">❁</span>
-          <span class="line">وَالسَّلَامُ عَلَيْكَ يَا إِسْمَاعِيلَ بْنَ مُوسَى بْنِ جَعْفَرٍ</span>
-          <span class="sep">❁</span>
-          <span class="line">أَنْتَ بَابُ اللَّهِ الْمَوْتُ مِنْهُ وَالْمَأْخُوذُ عَنْهُ</span>
-          <span class="sep">❁</span>
-          <span class="line">أَتَيْتُكَ زَائِرًا وَحَاجَاتِي لَكَ مُسْتَوْدَعَةٌ</span>
-          <span class="sep">❁</span>
-          <span class="line">وَهَا أَنَا ذَا أَسْتَوْدِعُكَ دِينِي وَأَمَانَتِي وَخَوَاتِيمَ</span>
-          <span class="line">عَمَلِي وَجَوَامِعَ أَمَلِي إِلَى مُنْتَهَى أَجَلِي</span>
-          <span class="sep">❁</span>
-          <span class="line">وَالسَّلَامُ عَلَيْكَ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ</span>
-        </div>
+      <img src="ziyarat.jpg" alt="زیارت‌نامه" class="ziyarat-image" onerror="this.style.display='none'; document.getElementById('ziyaratImgErr').style.display='block';">
+      <div class="img-error" id="ziyaratImgErr">
+        عکس <b>ziyarat.jpg</b> پیدا نشد. مطمئن شوید این فایل دقیقاً با همین اسم کنار index.html آپلود شده باشد.
       </div>
     </div>
     <div class="ziyarat-footer">
@@ -285,7 +315,7 @@
 
 </div>
 
-<audio id="bgAudio" src="audio.mp3" loop preload="none"></audio>
+<audio id="bgAudio" src="audio.mp3" preload="none"></audio>
 
 <script>
 /* ================== داده‌های محتوایی ================== */
@@ -440,7 +470,7 @@ function renderApp(route){
   if(route.page === 'home'){
     title.textContent = 'آستان سید مرتضی (ع)';
     sub.textContent = 'همراه شما در عبادت';
-    let html = '<div class="home-hero"><div class="em">☪️</div><h1>خوش آمدید</h1><p>هر بخش را که نیاز دارید انتخاب کنید</p></div>';
+    let html = '<div class="home-hero"><div class="hero-arch"></div><h1>خوش آمدید</h1><p>هر بخش را که نیاز دارید انتخاب کنید</p></div>';
     html += '<div class="grid">';
     Object.keys(CONTENT).forEach(key=>{
       const c = CONTENT[key];
