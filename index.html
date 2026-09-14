@@ -624,15 +624,40 @@ function renderFeedback(title, sub, scroll){
     '<button class="submit-btn" id="fbSubmit">ارسال پیام</button>'+
     '<div class="info-card" id="fbResult" style="display:none; margin-top:14px;"></div>';
   document.getElementById('fbSubmit').addEventListener('click', function(){
+    const name = document.getElementById('fbName').value.trim();
     const msg = document.getElementById('fbMsg').value.trim();
     const resultEl = document.getElementById('fbResult');
+    const btn = this;
     resultEl.style.display = 'block';
     if(!msg){
       resultEl.textContent = 'لطفاً پیام خود را بنویسید.';
-    } else {
-      resultEl.textContent = 'با تشکر، پیام شما ثبت شد. (برای ارسال واقعی، این بخش را به ایمیل یا ربات بله متصل کنید.)';
-      document.getElementById('fbMsg').value = '';
+      return;
     }
+    const BALE_TOKEN = '684372107:JesG5j0qFLH3eJRZ7Jl3_z5dj9viiu_roWc';
+    const BALE_CHAT_ID = '1211977452';
+    const text = 'پیام جدید از سایت آستان سید مرتضی (ع):\nنام: ' + (name || 'ناشناس') + '\nپیام: ' + msg;
+    btn.disabled = true;
+    resultEl.textContent = 'در حال ارسال...';
+    fetch('https://tapi.bale.ai/bot' + BALE_TOKEN + '/sendMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: BALE_CHAT_ID, text: text })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      btn.disabled = false;
+      if(data.ok){
+        resultEl.textContent = 'با تشکر، پیام شما ارسال شد.';
+        document.getElementById('fbMsg').value = '';
+        document.getElementById('fbName').value = '';
+      } else {
+        resultEl.textContent = 'ارسال پیام با خطا مواجه شد. لطفاً دوباره تلاش کنید.';
+      }
+    })
+    .catch(function(){
+      btn.disabled = false;
+      resultEl.textContent = 'اتصال به سرور بله برقرار نشد. اتصال اینترنت را بررسی کنید.';
+    });
   });
 }
 
