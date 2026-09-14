@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+<script src="https://tapi.bale.ai/miniapp.js?3"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>آستان سید مرتضی (ع)</title>
@@ -336,6 +337,11 @@
 <audio id="bgAudio" src="audio.mp3" preload="none"></audio>
 
 <script>
+/* ================== یکپارچگی با مینی‌اپ بله ================== */
+if(window.Bale && window.Bale.WebApp){
+  try{ window.Bale.WebApp.ready(); }catch(e){}
+}
+
 /* ================== داده‌های محتوایی ================== */
 const CONTENT = {
   dua: { title:"ادعیه و زیارات", desc:"دعاها و زیارت‌نامه‌ها", icon:"🤲", hint:"۶ مورد", items:[
