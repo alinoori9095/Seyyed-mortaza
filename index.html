@@ -377,15 +377,6 @@ const CONTENT = {
       {ar:"اللّهُمَّ أَنْتَ السَّلامُ وَمِنْكَ السَّلامُ", fa:"خدایا تو سلامتی هستی و سلامتی از توست."}
     ]}
   ]},
-  quran: { title:"قرآن کریم", desc:"تلاوت و ترجمه", icon:"📖", hint:"به‌زودی کامل", items:[
-    { id:"fatiha", name:"سوره حمد", occasion:"سوره اول قرآن", verses:[
-      {ar:"بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", fa:"به نام خداوند بخشنده مهربان."},
-      {ar:"الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", fa:"ستایش مخصوص خداوندی است که پروردگار جهانیان است."}
-    ]},
-    { id:"ikhlas", name:"سوره اخلاص", occasion:"سوره ۱۱۲", verses:[
-      {ar:"قُلْ هُوَ اللَّهُ أَحَدٌ", fa:"بگو او خدای یگانه است."}
-    ]}
-  ]},
   ramadan: { title:"اعمال ماه رمضان", desc:"دعاها و اعمال روزانه", icon:"🌙", hint:"۳۰ روز", items:[
     { id:"niyat-rooze", name:"نیت روزه", occasion:"هر روز ماه رمضان", verses:[
       {ar:"نَوَيْتُ صَوْمَ غَدٍ لِوُجُوبِهِ قُرْبَةً إِلَى اللَّهِ تَعَالَى", fa:"نیت کردم فردا را برای وجوب آن به قصد قربت روزه بگیرم."}
@@ -476,6 +467,7 @@ document.getElementById('goToAppBtn').addEventListener('click', function(){
 
 /* ================== اپ اصلی: تعریف بخش‌های ویژه ================== */
 const SPECIAL_SECTIONS = [
+  { key:'quran', title:'قرآن کریم', icon:'📖', hint:'متن، ترجمه فارسی و صوت' },
   { key:'calendar', title:'تقویم', icon:'📅', hint:'امروز' },
   { key:'qibla', title:'قبله‌نما', icon:'🧭', hint:'جهت قبله' },
   { key:'contact', title:'تماس با ما', icon:'☎️', hint:'راه‌های ارتباطی' },
@@ -555,6 +547,14 @@ function renderApp(route){
   }
 
   else if(route.page === 'special'){
+    if(route.key === 'quran'){
+      if(route.surah){
+        backBtn.onclick = ()=> renderApp({page:'special', key:'quran'});
+        return renderQuranSurah(title, sub, scroll, route.surah);
+      }
+      backBtn.onclick = ()=> renderApp({page:'home'});
+      return renderQuranList(title, sub, scroll);
+    }
     backBtn.onclick = ()=> renderApp({page:'home'});
     if(route.key === 'calendar') return renderCalendar(title, sub, scroll);
     if(route.key === 'qibla') return renderQibla(title, sub, scroll);
@@ -607,6 +607,87 @@ function renderQibla(title, sub, scroll){
       noteEl.textContent = 'دستگاه شما از قطب‌نما پشتیبانی نمی‌کند.';
     }
   });
+}
+
+/* ---------- قرآن کریم (متن، ترجمه و صوت زنده از سرویس آزاد) ---------- */
+let quranSurahListCache = null;
+let currentAyahAudio = null;
+
+function playAudioUrl(url, btn){
+  if(currentAyahAudio){ currentAyahAudio.pause(); }
+  if(btn && btn.dataset.playing === '1'){
+    btn.dataset.playing = '0';
+    btn.textContent = '▶︎ پخش';
+    currentAyahAudio = null;
+    return;
+  }
+  document.querySelectorAll('[data-playing="1"]').forEach(function(b){ b.dataset.playing='0'; b.textContent='▶︎ پخش'; });
+  currentAyahAudio = new Audio(url);
+  if(btn){ btn.dataset.playing = '1'; btn.textContent = '⏸ توقف'; }
+  currentAyahAudio.play().catch(function(){});
+  currentAyahAudio.addEventListener('ended', function(){
+    if(btn){ btn.dataset.playing = '0'; btn.textContent = '▶︎ پخش'; }
+  });
+}
+
+function renderQuranList(title, sub, scroll){
+  title.textContent = 'قرآن کریم';
+  sub.textContent = 'انتخاب سوره';
+  if(quranSurahListCache){
+    return showQuranSurahList(scroll, quranSurahListCache);
+  }
+  scroll.innerHTML = '<p style="color:#9fbbaa;font-size:.85rem;text-align:center;margin-top:30px;">در حال دریافت فهرست سوره‌ها...</p>';
+  fetch('https://api.alquran.cloud/v1/surah')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(data.code !== 200 || !data.data){ throw new Error('bad response'); }
+      quranSurahListCache = data.data;
+      showQuranSurahList(scroll, quranSurahListCache);
+    })
+    .catch(function(){
+      scroll.innerHTML = '<div class="info-card">دریافت فهرست قرآن ممکن نشد. اتصال اینترنت خود را بررسی و دوباره تلاش کنید.</div>';
+    });
+}
+
+function showQuranSurahList(scroll, list){
+  scroll.innerHTML = list.map(function(s){
+    return '<div class="list-item" data-surah="'+s.number+'"><div><div class="name">'+s.number+'. '+s.name+'</div><div class="occasion">'+s.englishNameTranslation+' • '+s.numberOfAyahs+' آیه</div></div><div class="chev">‹</div></div>';
+  }).join('');
+  scroll.querySelectorAll('[data-surah]').forEach(function(el){
+    el.addEventListener('click', function(){ renderApp({page:'special', key:'quran', surah: el.dataset.surah}); });
+  });
+}
+
+function renderQuranSurah(title, sub, scroll, surahNumber){
+  scroll.innerHTML = '<p style="color:#9fbbaa;font-size:.85rem;text-align:center;margin-top:30px;">در حال دریافت سوره...</p>';
+  fetch('https://api.alquran.cloud/v1/surah/' + surahNumber + '/editions/quran-uthmani,fa.makarem')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(data.code !== 200 || !data.data || data.data.length < 2){ throw new Error('bad response'); }
+      const arabicEdition = data.data[0];
+      const farsiEdition = data.data[1];
+      title.textContent = arabicEdition.name;
+      sub.textContent = arabicEdition.englishNameTranslation + ' • ' + arabicEdition.numberOfAyahs + ' آیه';
+      const surahAudioUrl = 'https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/' + surahNumber + '.mp3';
+      let html = '<div class="toolbar"><div class="tool-btn" id="playSurahBtn">▶︎ پخش کل سوره</div></div>';
+      html += arabicEdition.ayahs.map(function(ayah, i){
+        const faText = (farsiEdition.ayahs[i] && farsiEdition.ayahs[i].text) || '';
+        const ayahAudioUrl = 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/' + ayah.number + '.mp3';
+        return '<div class="verse">'+
+          '<p class="ar">('+ayah.numberInSurah+') '+ayah.text+'</p>'+
+          '<p class="fa">'+faText+'</p>'+
+          '<div class="toolbar"><div class="tool-btn" data-ayah-audio="'+ayahAudioUrl+'">▶︎ پخش</div></div>'+
+        '</div>';
+      }).join('');
+      scroll.innerHTML = html;
+      document.getElementById('playSurahBtn').addEventListener('click', function(){ playAudioUrl(surahAudioUrl, this); });
+      scroll.querySelectorAll('[data-ayah-audio]').forEach(function(btn){
+        btn.addEventListener('click', function(){ playAudioUrl(btn.dataset.ayahAudio, btn); });
+      });
+    })
+    .catch(function(){
+      scroll.innerHTML = '<div class="info-card">دریافت این سوره ممکن نشد. اتصال اینترنت خود را بررسی و دوباره تلاش کنید.</div>';
+    });
 }
 
 /* ---------- تماس با ما ---------- */
